@@ -1,7 +1,7 @@
 struct Node;
-struct Node *Ptr_to_node; //PtrToNode --> pointer to node
-struct Ptr_to_node list; 
-struct Ptr_to_node Position;
+typedef struct Node *Ptr_to_node; //PtrToNode --> pointer to node
+typedef Ptr_to_node List; 
+typedef Ptr_to_node Position;
 
 /* List with header L*/
 
@@ -38,20 +38,28 @@ List Init(){
    return header;
 }
 
-Position Find(Elem_type P, List L){ //find position of ele with value p
+Position Find(Elem_type X, List L){ //find position of ele with value p
     Ptr_to_node q;
-    q = L->next;
+    q = L->Next;
 
-    if(q==NULL) return NULL;
-
-    while(q->next!=P && q){
+    //***
+    while(q!=NULL && q->Element!=X){ 
         q = q->Next;
-        //if(q->Element==P) return q;
-        //else q = q->Next;
     }
     return q; 
-    //provided q is NULL, it stops while NUll, also returns NULL
-}
+    //***
+    //遍历直到找到想要的值/到尾巴也没得
+    
+} //provided q is NULL, it stops while NUll, also returns NULL
+
+void Delete(Elem_type X, List L){
+    if(L->Next==NULL) return;
+
+    Prt_to_no p;
+    p = L->Next;
+
+    while(p!=NULL && p->Next!=)
+} //Delete first occurrence of X from a list
 
 void Insert(Elem_type X, List L, Position P){
    //insert Node with value X, after P
