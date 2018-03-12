@@ -1,3 +1,4 @@
+//要死 寫的是quick find 不是quick union。。
 #include <iostream>
 //#include <string>
 #include <fstream>
