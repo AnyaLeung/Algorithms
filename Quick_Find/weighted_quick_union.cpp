@@ -5,6 +5,7 @@ using namespace std;
 
 /* global variable */
 int *id;
+int N = 40;
 
 /* fuction prototype */
 void UF(int N);
@@ -12,6 +13,7 @@ bool Connected(int value1, int value2);
 int Root(int value1);
 void Union(int value1, int value2);
 void PrintArr(void);
+int Size(int root);
 void InputFileProcess(void);
 /* fuction prototype */
 
@@ -38,15 +40,23 @@ int Root(int value1){
 void Union(int value1, int value2){
     int v1_root = Root(value1);
     int v2_root = Root(value2);
-    
+
     if(v1_root==v2_root){
         cout << "Connected" << endl;
         return;
     }
     else{
-        id[v1_root] = id[v2_root];
+        int res = (Size(v1_root) > Size(v2_root))? 1 : 0;
+        //tree root1 is smaller return 1, else return 0
+        
+        if(res==1){
+            id[v2_root] = v1_root;
+        }
+        if(res==0){
+            id[v1_root] = v2_root;
+        }
+   // PrintArr();
     }
-    PrintArr();
 }
 
 void PrintArr(void){
@@ -59,8 +69,32 @@ void PrintArr(void){
     for(int i=0; i<20; ++i){
         cout << id[i] << " ";
     }
+    cout << endl;
+    
+    cout << "weight ";
+
+    for(int i=0; i<20; ++i){
+        if(Root(i)!=id[i]){
+            cout << 0 << " ";
+            continue;
+        } //if not root then weight 0
+        cout << Size(i) << " ";
+    }
     cout << endl << endl;
 }
+
+int Size(int root){
+    int count = 0;
+
+    for(int i=0; i<N; ++i){
+        if(Root(id[i])==root && i!=id[i] ){
+            count ++; 
+        }
+    }
+    return count; //except itself
+} // size of node's tree
+
+
 
 /*
 //prototype
@@ -108,7 +142,28 @@ cout << tmp1 << tmp2;
 
 int main(void){
     UF(40);
-
+    //cout << "1: " << Size(1) << " 7: " << Size(7);
+    PrintArr();
+    Union(1, 7);
+    cout << endl;
+    PrintArr();
+    Union(14, 0);
+    PrintArr();
+    //cout << "1: " << Size(1) << " 7: " << Size(7);
+    
+    /*
+    Union(14, 0);
+    Union(9, 4);
+    Union(18, 18);
+    Union(2, 4);
+    Union(5, 5);
+    Union(1, 7);
+    Union(1, 11);
+    Union(15, 2);
+    Union(7, 16);
+    Union(11, 4);
+    Union(2, 13);
+    */
     //read and process file and output into txt f*ck
     return 0;
 }
