@@ -53,10 +53,8 @@ void Union(int value1, int value2){
             id[v2_root] = v1_root;
         }
         if(res==0){
-            id[v1_root] = v2_root;
-        }
-   // PrintArr();
-    }
+            id[v1_root] = v2_root; } }
+    PrintArr();
 }
 
 void PrintArr(void){
@@ -142,16 +140,7 @@ cout << tmp1 << tmp2;
 
 int main(void){
     UF(40);
-    //cout << "1: " << Size(1) << " 7: " << Size(7);
-    PrintArr();
     Union(1, 7);
-    cout << endl;
-    PrintArr();
-    Union(14, 0);
-    PrintArr();
-    //cout << "1: " << Size(1) << " 7: " << Size(7);
-    
-    /*
     Union(14, 0);
     Union(9, 4);
     Union(18, 18);
@@ -163,7 +152,34 @@ int main(void){
     Union(7, 16);
     Union(11, 4);
     Union(2, 13);
-    */
+    Union(12, 2);
+    Union(1, 16);
+    Union(18, 15);
+    Union(7,6);
+    Union(11,18);
+    Union(9,12);
+    Union(7,19);
+    Union(15,14);
+    Union(3,11);
+    Union(2,13);
+    Union(13,4);
+    Union(1,11);
+    Union(13,8);
+    Union(7,4);
+    Union(2,17);
+    Union(17,19);
+    Union(3,1);
+    Union(9,18);
+    Union(16,15);
+    Union(10,2);
+    Union(8,6);
+    Union(0,2);
+    Union(4,8);
+    Union(6,5);
+    Union(10,9);
+    Union(10,10);
+    Union(6,1);
+    Union(13,8);
     //read and process file and output into txt f*ck
     return 0;
 }
