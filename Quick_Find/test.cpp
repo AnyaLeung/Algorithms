@@ -24,7 +24,7 @@ void UF(int N){
     size = new int[N];
     for(int i=0; i<N; ++i){
         id[i] = i;
-        size[i] = 1;
+        size[i] = 0;
     }
     PrintArr();
 } //Init id[N]
@@ -49,21 +49,23 @@ void Union(int value1, int value2){
         return;
     }
     else{
-        if(size[v1_root]>size[v2_root]){
+       if(size[v1_root]>size[v2_root]){
+
+       }
+        int res = (Size(v1_root) > Size(v2_root))? 1 : 0;
+        //tree root1 is smaller return 1, else return 0
+
+        if(res==1){
             id[v2_root] = v1_root;
-            size[v1_root] += size[v2_root];
+
         }
-        else{
-            id[v1_root] = v2_root; 
-            size[v2_root] += size[v1_root];
-        } 
-    }
+        if(res==0){
+            id[v1_root] = v2_root; } }
     PrintArr();
 } 
 
 void PrintArr(void){
-    cout << "value  "; 
-    for(int i=0; i<20; ++i){
+    cout << "value  "; for(int i=0; i<20; ++i){
         cout << i << " " ;
     }
     cout << endl;
@@ -75,17 +77,73 @@ void PrintArr(void){
     cout << endl;
 
     cout << "weight ";
+
     for(int i=0; i<20; ++i){
-        /*
         if(Root(i)!=id[i]){
             cout << 0 << " ";
             continue;
         } //if not root then weight 0
-        */
-        cout << size[i] << " ";
+        cout << Size(i) << " ";
     }
     cout << endl << endl;
 }
+
+int Size(int root){
+    int count = 0;
+
+    for(int i=0; i<N; ++i){
+        if(Root(id[i])==root && i!=id[i] ){
+            count ++; 
+        }
+    }
+    return count; //except itself
+} // size of node's tree
+
+
+
+/*
+//prototype
+string GetFileName(){
+int choice = 0;
+
+cout << "Enter [1] to load case1_input," << endl;
+cout << "Enter [2] to load case2_input: " << endl;
+cin >> choice;
+
+if(choice==1)
+return "case1_input.txt";
+if(choice==2){
+return  "case2_input.txt";
+}
+}
+*/
+
+
+/*
+   void InputFileProcess(void){
+   int N = 0; // id[] length
+   int tmp1 = 0, tmp2 = 0;
+   string name;
+   name = GetFileName();
+   ifstream = infile(name);
+
+   infile >> tmp1;
+   infile >> tmp2;
+
+   N = (tmp1>tmp2)? tmp1 : tmp2;
+//按理來說到這裡已經讀了前兩行 知道了id[]的length
+
+while(!infile.eof()){
+infile >> tmp1 >> tmp2;
+cout << tmp1 << tmp2;
+}
+} //我他媽不會寫file啊真是要跪了
+//後幾行要把兩個參數的讀進去 然後union
+//還需要把結果存到file裡 怕了怕了 我去看computer orginization了。。
+//
+*/
+
+/* fuction definition */
 
 int main(void){
     UF(40);
