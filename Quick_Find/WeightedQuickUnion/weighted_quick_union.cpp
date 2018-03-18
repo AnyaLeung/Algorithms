@@ -1,10 +1,4 @@
-//明天完善：
-//改一下N和輸出的函數的N
-//寫一下輸出文件
-//寫一下N get的func
 //問ta weight怎麼算的emm
-//終於debug完了累死我了。。。。
-
 #include <iostream>
 #include <fstream>
 
@@ -12,16 +6,19 @@ using namespace std;
 
 /* global variable */
 int *id;
-int N = 100;
+int N = 0;
 int *size;
+string output_file_name;
+//FILE *file;
 
 /* fuction prototype */
 void UF(int N);
 bool Connected(int value1, int value2);
 int Root(int value1);
-void Union(int value1, int value2);
-void PrintArr(void);
+void Union(int value1, int value2, FILE* file);
+void PrintArrToFile(bool flag);
 void ReadFileAndUnion(string filename);
+void GetN(string filename);
 /* fuction prototype */
 
 /* fuction definition */
@@ -32,7 +29,7 @@ void UF(int N){
         id[i] = i;
         size[i] = 1;
     }
-    PrintArr();
+    PrintArrToFile(false);
 } //Init id[N]
 
 bool Connected(int value1, int value2){
@@ -46,12 +43,13 @@ int Root(int value1){
     return value1;
 }
 
-void Union(int value1, int value2){
+void Union(int value1, int value2, FILE* file){
     int v1_root = Root(value1);
     int v2_root = Root(value2);
+    int flag = false;
 
     if(v1_root==v2_root){
-        cout << "Connected" << endl;
+        fprintf(file, "%s", "Connect. \n");
         return;
     }
     else{
@@ -63,34 +61,64 @@ void Union(int value1, int value2){
             id[v1_root] = v2_root; 
             size[v2_root] += size[v1_root];
         } 
-    }
-    PrintArr();
-} 
+        char buffer[1000];
 
-void PrintArr(void){
-    cout << "value  "; 
-    for(int i=0; i<20; ++i){
-        cout << i << " " ;
-    }
-    cout << endl;
+        fprintf(file, "%s", "value  ");
+        for(int i=0; i<N; ++i){
+            fprintf(file, "%d", i);
+            fprintf(file, "%c", ' ');
+        }
+        fprintf(file, "%c", '\n');
 
-    cout << "father ";
-    for(int i=0; i<20; ++i){
-        cout << id[i] << " ";
-    }
-    cout << endl;
+        fprintf(file, "%s", "father ");
+        for(int i=0; i<N; ++i){
+            fprintf(file, "%d", id[i]);
+            fprintf(file, "%c", ' ');
+        }
+        fprintf(file, "%c", '\n');
 
-    cout << "weight ";
-    for(int i=0; i<20; ++i){
-        /*
-        if(Root(i)!=id[i]){
-            cout << 0 << " ";
-            continue;
-        } //if not root then weight 0
-        */
-        cout << size[i] << " ";
+
+        fprintf(file, "%s", "weight ");
+        for(int i=0; i<N; ++i){
+            fprintf(file, "%d", size[i]);
+            fprintf(file, "%c", ' ');
+        }
+        fprintf(file, "%c", '\n');
+        fprintf(file, "%c", '\n');
     }
-    cout << endl << endl;
+}
+
+void PrintArrToFile(bool flag){
+    if(flag){
+        fprintf(file, "%s", "connect.\n");
+        return ;
+    }
+
+    char buffer[1000];
+    file = fopen("output_file_name", "w");
+
+    fprintf(file, "%s", "value  ");
+    for(int i=0; i<N; ++i){
+        fprintf(file, "%d", i);
+        fprintf(file, "%c", ' ');
+    }
+    fprintf(file, "%c", '\n');
+
+    fprintf(file, "%s", "father ");
+    for(int i=0; i<N; ++i){
+        fprintf(file, "%d", id[i]);
+        fprintf(file, "%c", ' ');
+    }
+    fprintf(file, "%c", '\n');
+
+
+    fprintf(file, "%s", "weight ");
+    for(int i=0; i<N; ++i){
+        fprintf(file, "%d", size[i]);
+        fprintf(file, "%c", ' ');
+    }
+    fprintf(file, "%c", '\n');
+    fprintf(file, "%c", '\n');
 }
 
 void ReadFileAndUnion(string filename){ 
@@ -102,12 +130,7 @@ void ReadFileAndUnion(string filename){
     char *p = buffer;
     int opr1 = 0, opr2 = 0;
 
-    while(*p){
-        N *= 10;
-        N += int(*p) - '0';
-        p++;
-    } //get N
-    file.getline(buffer, sizeof(buffer)); //skip union count
+    file.getline(buffer, sizeof(buffer)); //skip line 1 and line2
 
     if(!file){
         cout << "cannot open file" << endl;
@@ -124,8 +147,7 @@ void ReadFileAndUnion(string filename){
                 enter_flag = true;
                 if(!op2_flag){
                     opr1 *= 10;
-                    opr1 += int(*q) - '0';
-                    q++;
+                    opr1 += int(*q) - '0'; q++;
                 }
                 while(*q==' '){
                     q++;
@@ -140,17 +162,32 @@ void ReadFileAndUnion(string filename){
             }
 
             if(enter_flag){
-                //cout << opr1 << "  " << opr2 << endl;
-                Union(opr1, opr2);
+                Union(opr1, opr2, &file);
             }
         }while(!file.eof());
     }
 }
 
-int main(void){
-    UF(N);
-    ReadFileAndUnion("c.txt"); 
-    Union(41, 17);
+void GetN(string filename){
+    fstream file;;
+    char buffer[10];
 
+    file.open(filename);
+    file.getline(buffer, sizeof(buffer));
+
+    char *p = buffer;
+    while(*p>='0' && *p<='9'){
+        N *= 10;
+        N += int(*p) - '0';
+        p++;
+    }
+}
+
+int main(void){
+    GetN("c.txt");
+    UF(N);
+    output_file_name = "res1.txt";
+
+    ReadFileAndUnion("c.txt"); 
     return 0;
 }
