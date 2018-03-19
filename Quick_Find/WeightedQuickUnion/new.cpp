@@ -9,13 +9,12 @@ int *id;
 int N = 0;
 int *size;
 string output_file_name;
-FILE* file;
 
 /* fuction prototype */
 void UF(int N);
 bool Connected(int value1, int value2);
 int Root(int value1);
-void Union(int value1, int value2, FILE file);
+void Union(int value1, int value2);
 void PrintArrToFile(bool flag);
 void ReadFileAndUnion(string filename);
 void GetN(string filename);
@@ -43,13 +42,12 @@ int Root(int value1){
     return value1;
 }
 
-void Union(int value1, int value2, FILE file){
+void Union(int value1, int value2){
     int v1_root = Root(value1);
     int v2_root = Root(value2);
-    int flag = false;
 
     if(v1_root==v2_root){
-        fprintf(file, "%s", "Connect. \n");
+        PrintArrToFile(true);
         return;
     }
     else{
@@ -61,6 +59,19 @@ void Union(int value1, int value2, FILE file){
             id[v1_root] = v2_root; 
             size[v2_root] += size[v1_root];
         } 
+        PrintArrToFile(false);
+    }
+}
+
+
+void PrintArrToFile(bool flag){
+    FILE* file;
+    file = fopen("res1", "a");
+    if(flag){
+        fprintf(file, "%s", "connect.\n");
+        return ;
+    }
+    else{
         char buffer[1000];
 
         fprintf(file, "%s", "value  ");
@@ -89,7 +100,7 @@ void Union(int value1, int value2, FILE file){
 }
 
 void ReadFileAndUnion(string filename){ 
-    FILE *file;
+    fstream file;;
     char buffer[100];
     file.open(filename);
 
@@ -129,7 +140,7 @@ void ReadFileAndUnion(string filename){
             }
 
             if(enter_flag){
-                Union(opr1, opr2, &file);
+                Union(opr1, opr2);
             }
         }while(!file.eof());
     }
@@ -154,8 +165,7 @@ int main(void){
     GetN("c.txt");
     UF(N);
     output_file_name = "res1.txt";
-    file = fopen("res1.txt", "w");
 
-    ReadFileAndUnion("c.txt", file); 
+    ReadFileAndUnion("c.txt"); 
     return 0;
 }
