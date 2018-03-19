@@ -28,7 +28,7 @@ void UF(int N){
         id[i] = i;
         size[i] = 1;
     }
-    //PrintArrToFile(false);
+    PrintArrToFile(false);
 } //Init id[N]
 
 bool Connected(int value1, int value2){
