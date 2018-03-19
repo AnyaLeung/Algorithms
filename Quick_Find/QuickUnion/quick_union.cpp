@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 using namespace std;
 
@@ -7,6 +8,7 @@ using namespace std;
 int *id;
 int N = 0;
 string output_file_name;
+double runtime = 0.0;
 
 /* fuction prototype */
 void UF(int N);
@@ -71,7 +73,7 @@ void PrintArr(bool flag){
     FILE* file;
     file = fopen(output_file_name.c_str(), "a");
     if(flag){
-        fprintf(file, "%s", "connect.\n");
+        fprintf(file, "%s", "Connect.\n\n");
         return ;
     }
     else{
@@ -134,7 +136,11 @@ void ReadFileAndUnion(string filename){
             }
 
             if(enter_flag){
+                clock_t t1, t2;
+                t1 = clock();
                 Union(opr1, opr2);
+                t2 = clock();
+                runtime += (t2-t1) / (double)(CLOCKS_PER_SEC);
             }
         }while(!file.eof());
     }
@@ -160,29 +166,7 @@ int main(void){
     ReadFileAndUnion("case2_input.txt");
     cout << "Print as case2_output.txt" << endl;
     cout << endl;
-
-    N = 0;
-    output_file_name = "";
-
-    char op;
-
-    while(op!='x'){
-        cout << "Enter [e] for more case, [x] to exit: ";
-        cin >> op;
-        if(op=='e'){
-            string input;
-            string output;
-            cout << "Input file name: ";
-            cin >> input;
-            cout << "Input output file name: ";
-            cin >> output;
-            N = 0;
-            GetN(input.c_str());
-            UF(N);
-            ReadFileAndUnion(output);
-            cout << "Complete.";
-        }
-    }
+    
     return 0;
 }
 

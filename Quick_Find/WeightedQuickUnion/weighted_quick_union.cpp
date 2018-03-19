@@ -67,7 +67,7 @@ void PrintArrToFile(bool flag){
     FILE* file;
     file = fopen(output_file_name.c_str(), "a");
     if(flag){
-        fprintf(file, "%s", "connect.\n");
+        fprintf(file, "%s", "Connect.\n\n");
         return ;
     }
     else{
@@ -179,27 +179,5 @@ int main(void){
     cout << "Print as case2__weight_output.txt" << endl;
     cout << endl;
 
-    N = 0;
-    output_file_name = "";
-
-    char op;
-
-    while(op!='x'){
-        cout << "Enter [e] for more case, [x] to exit: ";
-        cin >> op;
-        if(op=='e'){
-            string input;
-            string output;
-            cout << "Input file name: ";
-            cin >> input;
-            cout << "Input output file name: ";
-            cin >> output;
-            N = 0;
-            GetN(input.c_str());
-            UF(N);
-            ReadFileAndUnion(output);
-            cout << "Complete.";
-        }
-    }
     return 0;
 }
