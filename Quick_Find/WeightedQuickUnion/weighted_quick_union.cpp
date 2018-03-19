@@ -9,13 +9,12 @@ int *id;
 int N = 0;
 int *size;
 string output_file_name;
-FILE* file;
 
 /* fuction prototype */
 void UF(int N);
 bool Connected(int value1, int value2);
 int Root(int value1);
-void Union(int value1, int value2, FILE file);
+void Union(int value1, int value2);
 void PrintArrToFile(bool flag);
 void ReadFileAndUnion(string filename);
 void GetN(string filename);
@@ -43,13 +42,12 @@ int Root(int value1){
     return value1;
 }
 
-void Union(int value1, int value2, FILE file){
+void Union(int value1, int value2){
     int v1_root = Root(value1);
     int v2_root = Root(value2);
-    int flag = false;
 
     if(v1_root==v2_root){
-        fprintf(file, "%s", "Connect. \n");
+        PrintArrToFile(true);
         return;
     }
     else{
@@ -61,11 +59,22 @@ void Union(int value1, int value2, FILE file){
             id[v1_root] = v2_root; 
             size[v2_root] += size[v1_root];
         } 
+        PrintArrToFile(false);
+    }
+}
+
+void PrintArrToFile(bool flag){
+    FILE* file;
+    file = fopen(output_file_name.c_str(), "a");
+    if(flag){
+        fprintf(file, "%s", "connect.\n");
+        return ;
+    }
+    else{
         char buffer[1000];
 
         fprintf(file, "%s", "value  ");
-        for(int i=0; i<N; ++i){
-            fprintf(file, "%d", i);
+        for(int i=0; i<N; ++i){ fprintf(file, "%d", i);
             fprintf(file, "%c", ' ');
         }
         fprintf(file, "%c", '\n');
@@ -89,7 +98,7 @@ void Union(int value1, int value2, FILE file){
 }
 
 void ReadFileAndUnion(string filename){ 
-    FILE *file;
+    fstream file;;
     char buffer[100];
     file.open(filename);
 
@@ -129,7 +138,7 @@ void ReadFileAndUnion(string filename){
             }
 
             if(enter_flag){
-                Union(opr1, opr2, &file);
+                Union(opr1, opr2);
             }
         }while(!file.eof());
     }
@@ -151,11 +160,46 @@ void GetN(string filename){
 }
 
 int main(void){
-    GetN("c.txt");
+    GetN("case1__weight_input.txt");
+    cout << "Reading case1__weight_input now..." << endl;
+    output_file_name = "case1__weight_output.txt";
     UF(N);
-    output_file_name = "res1.txt";
-    file = fopen("res1.txt", "w");
+    ReadFileAndUnion("case1__weight_input.txt"); 
+    cout << "Print as case1__weight_output.txt" << endl;
+    cout << endl;
 
-    ReadFileAndUnion("c.txt", file); 
+    N = 0;
+    output_file_name = "";
+
+    GetN("case2__weight_input.txt");
+    cout << "Reading case2__weight_input now..." << endl;
+    output_file_name = "case2__weight_output.txt";
+    UF(N);
+    ReadFileAndUnion("case2__weight_input.txt"); 
+    cout << "Print as case2__weight_output.txt" << endl;
+    cout << endl;
+
+    N = 0;
+    output_file_name = "";
+
+    char op;
+
+    while(op!='x'){
+        cout << "Enter [e] for more case, [x] to exit: ";
+        cin >> op;
+        if(op=='e'){
+            string input;
+            string output;
+            cout << "Input file name: ";
+            cin >> input;
+            cout << "Input output file name: ";
+            cin >> output;
+            N = 0;
+            GetN(input.c_str());
+            UF(N);
+            ReadFileAndUnion(output);
+            cout << "Complete.";
+        }
+    }
     return 0;
 }
