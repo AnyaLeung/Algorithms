@@ -142,23 +142,23 @@ void ReadFileAndUnion(string filename){
 /* fuction definition */
 
 int main(void){
-    GetN("case1__weight_input.txt");
-    cout << "Reading case1__weight_input now..." << endl;
-    output_file_name = "case1__weight_output.txt";
+    GetN("case1_input.txt");
+    cout << "Reading case1_input now..." << endl;
+    output_file_name = "case1_output.txt";
     UF(N);
-    ReadFileAndUnion("case1__weight_input.txt");
-    cout << "Print as case1__weight_output.txt" << endl;
+    ReadFileAndUnion("case1_input.txt");
+    cout << "Print as case1_output.txt" << endl;
     cout << endl;
 
     N = 0;
     output_file_name = "";
 
-    GetN("case2__weight_input.txt");
-    cout << "Reading case2__weight_input now..." << endl;
-    output_file_name = "case2__weight_output.txt";
+    GetN("case2_input.txt");
+    cout << "Reading case2_input now..." << endl;
+    output_file_name = "case2_output.txt";
     UF(N);
-    ReadFileAndUnion("case2__weight_input.txt");
-    cout << "Print as case2__weight_output.txt" << endl;
+    ReadFileAndUnion("case2_input.txt");
+    cout << "Print as case2_output.txt" << endl;
     cout << endl;
 
     N = 0;
@@ -183,9 +183,6 @@ int main(void){
             cout << "Complete.";
         }
     }
-    return 0;        
-
-    //read and process file and output into txt f*ck
     return 0;
 }
 
