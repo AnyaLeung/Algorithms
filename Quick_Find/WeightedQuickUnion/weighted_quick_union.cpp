@@ -1,4 +1,3 @@
-//問ta weight怎麼算的emm
 #include <iostream>
 #include <fstream>
 
@@ -8,6 +7,7 @@ using namespace std;
 int *id;
 int N = 0;
 int *size;
+int *weight;
 string output_file_name;
 
 /* fuction prototype */
@@ -24,9 +24,11 @@ void GetN(string filename);
 void UF(int N){
     id = new int[N];
     size = new int[N];
+    weight = new int[N];
     for(int i=0; i<N; ++i){
         id[i] = i;
         size[i] = 1;
+        weight[i] = 0;
     }
     PrintArrToFile(false);
 } //Init id[N]
@@ -52,10 +54,13 @@ void Union(int value1, int value2){
     }
     else{
         if(size[v1_root]>size[v2_root]){
+            weight[v1_root] = ((weight[v2_root]+1)>(weight[v1_root]))? (weight[v2_root] + 1) : weight[v1_root];
             id[v2_root] = v1_root;
             size[v1_root] += size[v2_root];
         }
         else{
+            weight[v2_root] = ((weight[v1_root]+1)>(weight[v2_root]))?
+(weight[v1_root] + 1) : weight[v2_root];
             id[v1_root] = v2_root; 
             size[v2_root] += size[v1_root];
         } 
@@ -89,7 +94,7 @@ void PrintArrToFile(bool flag){
 
         fprintf(file, "%s", "weight ");
         for(int i=0; i<N; ++i){
-            fprintf(file, "%d", size[i]);
+            fprintf(file, "%d", weight[i]);
             fprintf(file, "%c", ' ');
         }
         fprintf(file, "%c", '\n');
