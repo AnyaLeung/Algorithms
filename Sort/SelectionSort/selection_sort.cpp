@@ -1,5 +1,11 @@
 #include <iostream>
 
+/*
+ * 從一堆裡選一個最大的，放最前面
+ * 從剩下的裡面選一個最大的，放第二
+ * 從剩下的剩下的選一個最大的，放第三
+ * 直到放完
+ */
 using namespace std;
 
 void selection_sort(int a[], int total);
