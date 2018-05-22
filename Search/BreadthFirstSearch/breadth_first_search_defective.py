@@ -7,7 +7,6 @@ def breadth_first_search(graph, start):
     search_queue = deque() #create a *double-end* deque (...?)
     search_queue += graph["you"] #add all ur neighbors into queue
 
-
     while search_queue: #not empty
         person = search_queue.popleft() 
 
