@@ -1,14 +1,14 @@
 PImage img, newImg;
-float[][] gradientMagnitude;
+float[][] gradientMagnitude; //梯度幅度
 float[][] seamFitness;
 
 void setup() {
   
-  String url = "Broadway tower.jpg";
+  String url = "Broadway tower.jpg"; //import image
   img = loadImage(url, "jpg");
-  size(500,333);
+  size(500,333); //image pixel size
 
-  background(255);
+  background(255); 
   image(img, 0, 0);
 }
 
@@ -17,7 +17,7 @@ float colorDistance(color c1, color c2) {
   float g = green(c1) - green(c2);
   float b = blue(c1) - blue(c2);
   return (r*r + g*g + b*b);
-}
+} //neighbor color's dist
 
 void computeGradient() {
   color left, right, above, below;
@@ -48,35 +48,44 @@ void computeGradient() {
         below = img.pixels[center];
       else 
         below = img.pixels[x + (y+1)*img.width];
+      //set edge's pixel same to nearest pixel
+      //if nicht edge, cal left, right, above, below
 
       gradientMagnitude[x][y] = colorDistance(left, right) + colorDistance(above, below);
-    }
+      //gradient magnitude =
+      //left and right's color dist + above and below's color dist
+    } //for every pixel
   }
 }
+// create a 2d array gradientMagnitude
 
 void computeVerticalSeams() {
   seamFitness = new float[img.width][img.height];
   for (int i = 0; i < img.width; i++) 
     seamFitness[i][0] = gradientMagnitude[i][0];
+    //assign gm's first row to sf's first row
   
   for (int y = 1; y < img.height; y++) {
     for (int x = 0; x < img.width; x++) {
       seamFitness[x][y] = gradientMagnitude[x][y];
 
       if (x == 0)
-        seamFitness[x][y] += min(seamFitness[x][y-1], seamFitness[x+1][y-1]);
+        seamFitness[x][y] += min(seamFitness[x][y-1], seamFitness[1][y-1]); //left edge: min(above, right above)
       else if (x == img.width-1)
-        seamFitness[x][y] += min(seamFitness[x][y-1], seamFitness[x-1][y-1]);
+        seamFitness[x][y] += min(seamFitness[x][y-1], seamFitness[x-1][y-1]); //right edge: min(above, left above)
       else
         seamFitness[x][y] += min(seamFitness[x-1][y-1], seamFitness[x][y-1], seamFitness[x+1][y-1]);
-      
+      //min(left below, above, right above)
+      //
+      //sf's value = min abovee(3 value)
     }
   }
 }
 
+//今天看到這裡了。。。
 PImage removeVerticalSeams(int numAttempts) {
-  computeGradient();
-  computeVerticalSeams();
+  computeGradient(); //??
+  computeVerticalSeams(); //?
   
   newImg = createImage(img.width-numAttempts, img.height, RGB);
   newImg.loadPixels();
