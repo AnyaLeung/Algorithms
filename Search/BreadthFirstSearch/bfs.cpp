@@ -11,3 +11,5 @@ start.enque();
         length = 1;
     }
  }
+
+query{}
