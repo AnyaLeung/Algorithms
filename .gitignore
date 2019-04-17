@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.out
 
 # Distribution / packaging
 .Python
@@ -99,5 +100,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
-a.out
